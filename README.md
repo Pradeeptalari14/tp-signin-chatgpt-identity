@@ -51,6 +51,21 @@ flowchart LR
 
 ---
 
+## 💻 Infrastructure & Software Technology Stack
+
+| Layer | Technology & Tools | Production Role |
+|---|---|---|
+| **Container & Orchestration** | Kubernetes 1.30+, Docker OCI Distroless | Isolated microservice pods, auto-healing replica sets, horizontal pod autoscaling (HPA) |
+| **Edge Ingress & Reverse Proxy** | Envoy Proxy, Traefik, Cloudflare Zero Trust | Edge TLS 1.3 termination, rate-limiting, and DDoS protection |
+| **API Application Framework** | Python 3.11+, FastAPI (ASGI), Uvicorn | High-throughput asynchronous request handling and OpenAPI documentation generation |
+| **Cryptographic & Token Engine** | PyJWT 2.8+, `cryptography` OpenSSL engine | Asymmetric RS256 JWT signature verification and JWKS public key rotation |
+| **Data Contracts & Validation** | Pydantic v2 | High-performance Rust-backed schema validation for token claims and ZDR assertions |
+| **Network & Transport Client** | HTTPX (AsyncIO), Requests | Non-blocking token exchange with OpenAI OAuth2 / OIDC endpoints |
+| **Distributed Session Cache** | Redis 7.2 Cluster | In-memory key caching, rate limit quotas, and instant revoked token denylist |
+| **Security & Compliance Protocols** | OpenID Connect 1.0, OAuth 2.0 (RFC 6749), PKCE (RFC 7636 S256) | Zero password breach liability, Zero Data Retention (ZDR) verification, agent sub-delegation |
+
+---
+
 ## 🎯 Where to Use (Real-World Enterprise Production Scenarios)
 
 1. **Enterprise AI Portals & Developer Workbenches**:
