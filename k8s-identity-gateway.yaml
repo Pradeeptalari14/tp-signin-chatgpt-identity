@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatgpt-identity-gateway
+  namespace: auth-system
+  labels:
+    app.kubernetes.io/name: chatgpt-identity-gateway
+    app.kubernetes.io/part-of: identity-mesh
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chatgpt-identity-gateway
+  template:
+    metadata:
+      labels:
+        app: chatgpt-identity-gateway
+    spec:
+      containers:
+      - name: identity-gateway
+        image: ghcr.io/pradeeptalari14/chatgpt-identity-gateway:v1.0.0
+        ports:
+        - containerPort: 8000
+          name: http-auth
+        env:
+        - name: OPENAI_OAUTH_ISSUER
+          value: "https://auth.openai.com/oauth"
+        - name: ENFORCE_ZDR
+          value: "true"
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatgpt-identity-gateway
+  namespace: auth-system
+spec:
+  type: ClusterIP
+  selector:
+    app: chatgpt-identity-gateway
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: http-auth
