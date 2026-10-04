@@ -14,33 +14,39 @@ Enterprise OAuth2 / OIDC authentication gateway, Zero Data Retention (ZDR) ident
 ![Sign in with ChatGPT Architecture](docs/signin_chatgpt_flow.png)
 
 ```mermaid
-flowchart TD
-    subgraph Client["Enterprise Client App"]
+flowchart LR
+    subgraph Client["Enterprise Client Tier"]
         User["Corporate User / Agent"]
-        SPA["Single Page App / CLI Client"]
+        SPA["SPA / Mobile / CLI App"]
     end
 
-    subgraph OIDC["OpenAI OAuth2 Provider"]
-        AuthEp["auth.openai.com/oauth/authorize"]
-        TokenEp["auth.openai.com/oauth/token"]
-        JWKS["JWKS Public Key Certs"]
+    subgraph OIDC["OpenAI OAuth2 & OIDC Provider"]
+        AuthEp["/oauth/authorize (PKCE)"]
+        TokenEp["/oauth/token (Exchange)"]
+        JWKS["JWKS Public Certs"]
     end
 
     subgraph Gateway["Identity Token Gateway"]
-        MW["FastAPI Token Interceptor"]
+        MW["Token Interceptor Middleware"]
         Verif["RS256 Signature & Claims Validator"]
-        ZDR["ZDR Policy Guardrail Enforcer"]
+        ZDR["Zero Data Retention (ZDR) Enforcer"]
     end
 
-    User -->|Initiates SSO with PKCE| SPA
-    SPA -->|Redirects| AuthEp
-    AuthEp -->|Auth Code & Code Verifier| TokenEp
-    TokenEp -->|RS256 Signed JWT| SPA
-    SPA -->|Bearer Token In Header| MW
+    subgraph Backend["Enterprise Downstream Services"]
+        API["Core API Gateway"]
+        Services["Microservices Mesh"]
+    end
+
+    User -->|Initiates SSO| SPA
+    SPA -->|Auth Code Request| AuthEp
+    AuthEp -->|Auth Code Grant| TokenEp
+    TokenEp -->|Signed ID Token (JWT)| SPA
+    SPA -->|Bearer JWT Header| MW
+    JWKS -.->|Key Rotation Sync| Verif
     MW --> Verif
-    JWKS -->|Public Keys| Verif
     Verif --> ZDR
-    ZDR -->|Authorized Claims| Client
+    ZDR -->|Validated Identity Claims| API
+    API --> Services
 ```
 
 ---
