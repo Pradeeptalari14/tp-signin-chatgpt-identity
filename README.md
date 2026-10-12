@@ -1,3 +1,6 @@
+[![Ecosystem](https://img.shields.io/badge/Portfolio%20Ecosystem-341%20Studios-6366f1.svg)](https://pradeeptalari.me/projects/)
+[![Architecture DAG](https://img.shields.io/badge/Architecture-DAG%20%26%20Course-10b981.svg)](https://pradeeptalari.me/tools/repo-learning/)
+
 # Sign in with ChatGPT & Identity Token Gateway (`tp-signin-chatgpt-identity`)
 
 [![CI](https://github.com/Pradeeptalari14/tp-signin-chatgpt-identity/actions/workflows/identity-ci.yml/badge.svg)](https://github.com/Pradeeptalari14/tp-signin-chatgpt-identity/actions)
@@ -147,3 +150,6 @@ tp-signin-chatgpt-identity/
 - **Cryptographic JWKS Cache**: JWKS public keys are cached with a 1-hour TTL and refreshed in the background with exponential backoff.
 - **Audience Enforcement**: Tokens with mismatched `aud` fields or expired timestamps are rejected with HTTP 401 immediately before payload processing.
 - **ZDR Enforcement Mode**: When `ENFORCE_ZDR=true`, any token lacking the verified `zdr_enabled: true` claim is refused with HTTP 403 Forbidden.
+
+---
+*Synchronized with [Sign in with ChatGPT Identity Studio Studio](https://pradeeptalari.me/tools/signin-chatgpt-identity/) & [Repository Learning DAG](https://pradeeptalari.me/tools/repo-learning/) — [Talari Pradeep Portfolio](https://pradeeptalari.me)*
